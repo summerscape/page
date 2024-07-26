@@ -1,65 +1,72 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+const ClothItem = ({ title, value, imgPath }) => {
+  // console.log(`Image path for ${title}:`, imgPath); // Log the image path to verify
+
+  return (
+    <div>
+      <strong>{title}:</strong> {value}
+      <div>
+        <img src={imgPath} alt={value} style={{ width: '100px', height: '100px' }} onError={(e) => { e.target.src = 'img/placeholder.png'; }} />
+      </div>
+    </div>
+  );
+};
+
+const ClothList = ({ clothes, style}) => (
+  <>
+    <ClothItem title="상의" value={clothes.상의} imgPath={`/img/clothes/${style.toLowerCase()}/${clothes.상의}.png`} />
+    <ClothItem title="하의" value={clothes.하의} imgPath={`/img/clothes/${style.toLowerCase()}/${clothes.하의}.png`} />
+    <ClothItem title="신발" value={clothes.신발} imgPath={`img/clothes/${style.toLowerCase()}/${clothes.신발}.png`} />
+    <ClothItem title="악세서리" value={clothes.악세서리} imgPath={`/img/clothes/${style.toLowerCase()}/${clothes.악세서리}.png`} />
+  </>
+);
+
 
 
 const ClothAPI = () => {
+  const [clothesData, setClothesData] = useState({
+    Casual: {},
+    Formal: {},
+    Sporty: {}
+  });
+  const [selectedStyle, setSelectedStyle] = useState(null);
 
-    const [clothList, setClothList] = useState([]);
-  
-    const url = 'http://127.0.0.1:8000/code'
+  useEffect(() => {
+    const fetchClothes = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/code');
+        console.log(response.data);
+        setClothesData(response.data);
+      } catch (error) {
+        console.error('Failed to fetch clothes data:', error);
+      }
+    };
 
-    const getAPi = async() =>{
-        try{
-            const res = await axios.get(url);
-            console.log(res.data)
-            setClothList(res.data.Casual)
-        } catch(error){
-            console.log(error);
-        }
-    }
+    fetchClothes();
+  }, []);
 
-    useEffect(()=>{
-        getAPi();
-    },[])
-    
+  const handleStyleClick = (style) => {
+    setSelectedStyle(style);
+  };
 
   return (
-
-
-
     <div>
-       옷
-
-    <table>
-        <thead>
-        <tr>
-            <td></td>
-
-        </tr>
-
-
-        </thead>
-
-        <tbody>
-            {clothList.상의}
-            {clothList.하의}
-            {clothList.신발}
-            {clothList.악세사리}
-
-    
-
-        </tbody>
-
-
-
-
-    </table>
-
-
-
-
+      <h2>옷</h2>
+      <div>
+        <button onClick={() => handleStyleClick('Casual')}>Casual</button>
+        <button onClick={() => handleStyleClick('Formal')}>Formal</button>
+        <button onClick={() => handleStyleClick('Sporty')}>Sporty</button>
+      </div>
+      {selectedStyle && (
+        <div>
+          <h3>{selectedStyle} Style</h3>
+          <ClothList clothes={clothesData[selectedStyle]} style={selectedStyle} />
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default ClothAPI
+export default ClothAPI;
