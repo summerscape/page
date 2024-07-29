@@ -27,6 +27,8 @@ const TodayList = () => {
     const dateString = today.toISOString().split('T')[0].replace(/-/g, '');
     const hours = today.getHours();
     const baseTime = hours < 2 ? '2300' : `${String((Math.floor(hours / 3) - 1) * 3 + 2).padStart(2, '0')}00`;
+   
+   // 브라우저에서 요청받은 값을 넣어야댐
     const nx = 60; // Example grid x coordinate
     const ny = 127; // Example grid y coordinate
 

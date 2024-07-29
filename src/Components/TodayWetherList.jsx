@@ -116,7 +116,7 @@ const TodayWeatherList = () => {
         )}
       </div> 
 
-      {/* <div>
+      { <div>
         <h2>내일의 날씨</h2>
         <p>1시간 기온: {tomorrowWeather?.TMP || '데이터 없음'}°C</p>
         <p>최저 기온: {tomorrowWeather?.TMN || '데이터 없음'}°C</p>
@@ -130,7 +130,7 @@ const TodayWeatherList = () => {
         {tomorrowWeather?.SKY && (
           <img src={getSkyImage(tomorrowWeather.SKY)} alt="하늘 상태" style={{ width: '100px', height: '100px' }} />
         )}
-      </div> */}
+      </div>}
 
 
     </div>
